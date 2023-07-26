@@ -1,0 +1,70 @@
+// snippet of code @ 2023-06-16 13:36:31
+
+// === Rust Playground ===
+// This snippet is in: ~/.emacs.d/rust-playground/at-2023-06-16-133631/
+
+// Execute the snippet: C-c C-c
+// Delete the snippet completely: C-c k
+// Toggle between main.rs and Cargo.toml: C-c b
+
+use std::convert::TryFrom;
+
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+
+#[allow(dead_code)]
+pub fn type_of<T>(_: &T) -> String {
+    let var_type = std::any::type_name::<T>();
+    var_type.to_string()
+}
+
+#[derive(Debug, Copy, Clone, IntoPrimitive, TryFromPrimitive)]
+#[repr(u32)]
+enum Test {
+    A,
+    B,
+    C,
+}
+
+impl Test {
+    fn to_num(&self) -> u32 {
+        let a = *self;
+        println!("{:?}", a);
+        a as u32
+    }
+    fn from_num(num: u32) -> Test {
+        Test::try_from(num).unwrap()
+    }
+}
+
+#[derive(Debug, PartialEq)]
+struct StTest {
+    name: String,
+    value: i32,
+}
+
+impl StTest {
+    fn set_name(&mut self, name: &str) {
+        self.name = name.to_string();
+    }
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
+}
+
+fn main() {
+    // let val = Test::C;
+    // let a = val.to_i32().unwrap();
+    // println!("{}", a);
+
+    let val = Test::C.to_num();
+    let a = Test::try_from(val).unwrap();
+    println!("{:?}", a);
+
+    let mut st = StTest {
+        name: String::new(),
+        value: 0,
+    };
+    println!("{:?}", st);
+    st.set_name("Test Struct");
+    println!("{:?}", st);
+}
