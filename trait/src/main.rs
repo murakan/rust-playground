@@ -1,11 +1,4 @@
-// snippet of code @ 2023-06-20 17:35:23
-
-// === Rust Playground ===
-// This snippet is in: ~/.emacs.d/rust-playground/at-2023-06-20-173523/
-
-// Execute the snippet: C-c C-c
-// Delete the snippet completely: C-c k
-// Toggle between main.rs and Cargo.toml: C-c b
+// -*- mode: Rust; coding: utf-8 -*-
 
 pub fn _type_of<T>(_: &T) -> String {
     let var_type = std::any::type_name::<T>();

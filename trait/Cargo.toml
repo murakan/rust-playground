@@ -1,0 +1,9 @@
+# === Rust Playground ===
+
+[package]
+name = "trait"
+version = "0.1.0"
+authors = ["Kan Murata <kan@murakan.info>"]
+edition = "2018"
+
+[dependencies]

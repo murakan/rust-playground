@@ -1,11 +1,4 @@
-// snippet of code @ 2023-06-16 13:36:31
-
-// === Rust Playground ===
-// This snippet is in: ~/.emacs.d/rust-playground/at-2023-06-16-133631/
-
-// Execute the snippet: C-c C-c
-// Delete the snippet completely: C-c k
-// Toggle between main.rs and Cargo.toml: C-c b
+// -*- mode: Rust; coding: utf-8 -*-
 
 use std::convert::TryFrom;
 
