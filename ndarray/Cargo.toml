@@ -8,5 +8,3 @@ edition = "2018"
 [dependencies]
 byteorder = "1.4.3"
 ndarray = "*"
-opencv = "0.83.0"
-rand = "0.8.5"
