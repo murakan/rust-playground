@@ -1,28 +1,64 @@
 // -*- mode: Rust; coding: utf-8 -*-
 
-mod raw_image;
-
-use std::fs::File;
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use ndarray::prelude::*;
-use crate::raw_image::*;
+use ndarray_rand::{rand_distr::Uniform, RandomExt};
+use std::fs::File;
+use tempfile::NamedTempFile;
 
-fn _type_of<T>(_: &T) -> String {
-    let var_type = std::any::type_name::<T>();
-    var_type.to_string()
+fn create_raw_image(shape: (usize, usize)) -> Array2<u16> {
+    Array::random(shape, Uniform::new(u16::MIN, u16::MAX))
+}
+
+fn write_raw_image(file: &mut File, img: &Array2<u16>) -> std::io::Result<()> {
+    let [rows, cols] = img.shape() else { panic!("Shape expected [rows, cols] but {:?}", img.shape()) };
+    let shape = (rows, cols);
+    println!("{:?}", shape);
+    let buf = img.clone().into_raw_vec();
+    for data in &buf {
+        file.write_u16::<LittleEndian>(*data)?;
+    }
+    Ok(())
+}
+
+fn read_raw_image(file: &mut File, shape: (usize, usize)) -> std::io::Result<Array2<u16>> {
+    let (rows, cols) = shape;
+    let num_of_data = cols * rows;
+    let mut buf = vec![u16::default(); num_of_data];
+    match file.read_u16_into::<LittleEndian>(&mut buf) {
+        Ok(_) => Ok(Array::from_shape_vec(shape, buf).unwrap()),
+        Err(e) => Err(e),
+    }
 }
 
 fn main() {
-    let mut args = std::env::args();
-    if let Some(filename) = args.nth(1) {
-        println!("Results: {}", filename);
-        let shape = (16, 10);
-        if let Ok(mut f) = File::open(filename) {
-            let img: Array2<u8> = f.read_raw_image(shape).unwrap();
-            println!("{:?}", img);
-            let img: Array2<u16> = f.read_raw_image(shape).unwrap();
-            println!("{:?}", img);
-            let img: Array2<f32> = f.read_raw_image(shape).unwrap();
-            println!("{:?}", img);
+    let shape = (3, 5);
+    let ndarr = create_raw_image(shape);
+    println!("Create new ndarray.");
+    println!("{:?}", ndarr);
+
+    if let Ok(tmp_file) = NamedTempFile::new() {
+        let path = tmp_file.path();
+        println!("{:?}", path);
+
+        if let Ok(mut wr_file) = File::create(path) {
+            match write_raw_image(&mut wr_file, &ndarr) {
+                Ok(_) => {
+                    println!("Raw array file created.");
+                    println!("{:?}", wr_file);
+                }
+                Err(e) => println!("{:?}", e),
+            }
+        }
+
+        if let Ok(mut rd_file) = File::open(path) {
+            match read_raw_image(&mut rd_file, shape) {
+                Ok(new_ndarr) => {
+                    println!("Raw array file read done.");
+                    println!("{:?}", new_ndarr);
+                }
+                Err(e) => println!("{:?}", e),
+            }
         }
     }
 }
