@@ -1,9 +1,9 @@
 # === Rust Playground ===
 [package]
-name = "ndarray"
+name = "ndarray-sample"
 version = "0.1.0"
 authors = ["Kan Murata <kan@murakan.info>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 byteorder = "1.4.3"
