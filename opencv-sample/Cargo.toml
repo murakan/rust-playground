@@ -1,0 +1,13 @@
+# === Rust Playground ===
+
+[package]
+name = "opencv-sample"
+version = "0.1.0"
+authors = ["Kan Murata <kan@murakan.info>"]
+edition = "2021"
+
+[dependencies]
+byteorder = "1.4.3"
+clap = { version = "4.3.23", features = ["derive"] }
+opencv = "0.84.5"
+rand = "0.8.5"
