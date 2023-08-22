@@ -1,10 +1,10 @@
 # === Rust Playground ===
 
 [package]
-name = "clap"
+name = "clap-sample"
 version = "0.1.0"
 authors = ["Kan Murata <kan@murakan.info>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 clap = { version = "4.3.19", features = ["derive"] }
