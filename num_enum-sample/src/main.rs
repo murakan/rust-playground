@@ -45,11 +45,8 @@ impl StTest {
 }
 
 fn main() {
-    // let val = Test::C;
-    // let a = val.to_i32().unwrap();
-    // println!("{}", a);
-
-    let val = Test::C.to_num();
+    let enum_val = Test::C;
+    let val = enum_val as u32;
     let a = Test::try_from(val).unwrap();
     println!("{:?}", a);
 
