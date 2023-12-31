@@ -1,17 +1,23 @@
 // -*- mode: Rust; coding: utf-8 -*-
 
-use dialoguer::{theme::ColorfulTheme, Completion, Confirm, FuzzySelect, History, Input};
+use dialoguer::{
+    theme::ColorfulTheme, Completion, Confirm, FuzzySelect, History, Input, MultiSelect, Password,
+    Select,
+};
 use std::collections::VecDeque;
 
 fn main() {
-    confirmation();
+    confirmation_method();
     simple_input_mthod();
+    password_input_method();
     history_input_method();
-    fuzzy_selection_input_method();
     completion_input_method();
+    selection_method();
+    fuzzy_selection_method();
+    multi_selection_method();
 }
 
-fn confirmation() {
+fn confirmation_method() {
     println!("Comfirmation method.");
     let confirm = Confirm::with_theme(&ColorfulTheme::default())
         .with_prompt("Do you want to continue?")
@@ -31,6 +37,16 @@ fn simple_input_mthod() {
         .interact_text()
         .unwrap();
     println!("{}", text)
+}
+
+fn password_input_method() {
+    println!("Input password method.");
+    let password = Password::with_theme(&ColorfulTheme::default())
+        .with_prompt("New password")
+        .with_confirmation("Enter password", "Wrong password")
+        .interact()
+        .unwrap();
+    println!("{}", password);
 }
 
 struct MyHistory(VecDeque<String>);
@@ -106,8 +122,33 @@ fn completion_input_method() {
     println!("{}", text);
 }
 
-fn fuzzy_selection_input_method() {
-    println!("Input text with fuzzy selection method.");
+fn selection_method() {
+    println!("The simplest selection method.");
+    let languages = vec!["C", "C++", "Rust", "Python", "Go"];
+    let index = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Please choose the language you are most comfortable with.")
+        .items(&languages)
+        .interact()
+        .unwrap();
+    println!("{} is the best.", languages[index]);
+}
+
+fn multi_selection_method() {
+    println!("Multi selection method.");
+    let languages = vec!["C", "C++", "Rust", "Python", "Go"];
+    let defaults = vec![true, false, false, false, false];
+    let indexes: Vec<usize> = MultiSelect::with_theme(&ColorfulTheme::default())
+        .with_prompt("Please choose the language you like.")
+        .items(&languages)
+        .defaults(&defaults)
+        .interact()
+        .unwrap();
+    let items = indexes.iter().map(|i| languages[*i]).collect::<Vec<_>>();
+    println!("You like {:?}, aren't you?", items);
+}
+
+fn fuzzy_selection_method() {
+    println!("Fuzzy selection with input text method.");
     let selections = vec![
         "set", "get", "show", "quit", "exit", "print", "text", "value",
     ];
