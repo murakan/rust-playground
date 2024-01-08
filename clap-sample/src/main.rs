@@ -10,11 +10,14 @@ use clap::Parser;
 /// This structure is for argument options.
 #[derive(Debug, Parser)]
 struct Args {
-    option: String,
+    parameter: String,
+    #[clap(short, long)]
+    option: Option<String>,
 }
 
 fn main() {
     let args = Args::parse();
+    let param = args.parameter;
     let opt = args.option;
-    println!("Results: {}", opt);
+    println!("Results: {} {:?}", param, opt);
 }
